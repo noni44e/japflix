@@ -2,6 +2,9 @@ let peliculas = [];
 let btn = document.getElementById('btnBuscar');
 let input = document.getElementById('inputBuscar');
 let contenedor = document.getElementById('lista');
+const offcanvasElement = document.getElementById('offcanvasTop');
+const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+
 
 function estrellas(cantidad){
   let canti = Math.round(cantidad);
@@ -49,12 +52,33 @@ fetch('https://japceibal.github.io/japflix_api/movies-data.json')
           item.innerHTML=`
           <div class='card-body'>
             <h4>${peli.title}</h4>
-            <p>${peli.tagline}</p>
+            <p class='p'>${peli.tagline}</p>
             <p class='text-end'><span style='color:gold;'>${star}</span></p>
-            <p class='der'>Language: <span style='color: white'>${peli.original_language}</span></p>
+            <p class='p izq'>Language: <span style='color: white'>${peli.original_language}</span></p>
           </div>
           `;
           contenedor.appendChild(item);
+
+          item.addEventListener('click', ()=>{
+            let year = peli.release_date.split("-")[0];
+            document.getElementById('offcanvasTopLabel').textContent = peli.title;
+            document.querySelector('.offcanvas-body').innerHTML = `
+              <p>${peli.overview}</p>
+              <p><strong>Géneros:</strong> ${peli.genres.map(g => g.name).join(', ')}</p>
+              <div class="dropdown">
+              <button class="end btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Mostrar
+              </button>
+                <ul class="dropdown-menu">
+                  <li><p><strong>Año:</strong> ${year} min</p></li>
+                  <li><p><strong>Duración:</strong> ${peli.runtime} min</p></li>
+                  <li><p><strong>Presupuesto:</strong> $${peli.budget.toLocaleString()}</p></li>
+                  <li><p><strong>Ingresos:</strong> $${peli.revenue.toLocaleString()}</p></li>
+                </ul>
+              </div>
+            `;
+            offcanvas.show();
+          });
         }
       });
     });
