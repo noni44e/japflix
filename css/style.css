@@ -26,3 +26,11 @@ main {
 .offcanvas-top{
     height: fit-content;
 }
+
+p{
+    color: rgba(240, 255, 255, 0.692);
+}
+
+h4{
+    color:rgb(201, 30, 30);
+}
